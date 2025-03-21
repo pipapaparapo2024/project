@@ -1,10 +1,14 @@
 import { FC } from "react";
-import { LoginForm } from "../widgets/LoginForm";
+import { Link } from "react-router-dom";
+
+import { LoginForm } from "../widgets/loginForm/LoginForm";
+
 
 export const LoginPage: FC = () => {
   return (
-    <div className="border-5 border rounded-lg p-1 bg-gray-900 h-[300px] w-[300px]">
+    <div className="pt-60 bg-gray-300 h-[100vh]">
       <LoginForm />
+      <Link to={"/"}>перейти </Link>
     </div>
   );
 };
