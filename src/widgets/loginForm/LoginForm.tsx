@@ -1,53 +1,69 @@
 import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../app/index.css";
-
-
+import { ToastContainer, Bounce } from "react-toastify";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { Tabs, Tab } from '@mui/material';
-import { LoginFormData } from "../../services/store";
-import {loginUser,registerUser} from "../../services/store";
-
+import { Tabs, Tab } from "@mui/material";
+import { LoginFormData } from "./StoreLoginForm";
+import { loginUser, registerUser } from "./StoreLoginForm";
 
 export const LoginForm: FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const { register, handleSubmit } = useForm<LoginFormData>();
-  const [value,setValue]=useState(0)
+  const [value, setValue] = useState(0);
+  const navigate = useNavigate();
 
   const handleChange = (_event: any, newValue: number) => {
     setValue(newValue);
   };
 
-
-  const a11yProps = (index:number) => ({
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  });
-
   const onSubmit = async (User: LoginFormData) => {
     try {
       if (isLogin) {
-        const result = await loginUser(User);
-        console.log("Логин выполнен успешно:", result);
+        toast.success("Успешно залогинен");
+        await loginUser(User);
+        loginUser(User).then(() => navigate("/"));
       } else {
-        const result = await registerUser(User);
-        console.log("Регистрация выполнена успешно:", result);
+        await registerUser(User);
+        toast.success("Регистрация выполнена успешно");
       }
     } catch (error) {
-      console.error("Ошибка:");
+      toast.error("Ошибка");
     }
   };
 
   return (
     <div className="border-5-800 border rounded-lg p-3 bg-gray-900 h-[300px] w-[300px] mx-auto">
       <div className="flex justify-around">
+        <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Bounce}
+        />
         <Tabs
-       
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab style={{color:"whitesmoke"}} onClick={() => setIsLogin(true)} label="Login" {...a11yProps(0)} />
-          <Tab style={{color:"whitesmoke"}} onClick={() => setIsLogin(false)} label="Register" {...a11yProps(1)} />
+          <Tab
+            style={{ color: "whitesmoke" }}
+            onClick={() => setIsLogin(true)}
+            label="Login"
+          />
+          <Tab
+            style={{ color: "whitesmoke" }}
+            onClick={() => setIsLogin(false)}
+            label="Register"
+          />
         </Tabs>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +87,12 @@ export const LoginForm: FC = () => {
         >
           {isLogin ? "Login" : "Register"}
         </button>
-        <button className="cursor-pointer hover:scale-105 transition duration-300 text-white p-2 rounded-sm  p-1 m-2" type="button">forgot password?</button>
+        <button
+          className="cursor-pointer hover:scale-105 transition duration-300 text-white p-2 rounded-sm  p-1 m-2"
+          type="button"
+        >
+          forgot password?
+        </button>
       </form>
     </div>
   );

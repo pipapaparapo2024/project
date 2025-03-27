@@ -1,26 +1,27 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
 
-import { useStore } from "../../services/store";
-import {NavType} from "../../services/store";
+import { useStore } from "./StoreNav";
+import { NavType } from "./StoreNav";
+import { NavStyle } from "./StoreNav";
 
 export const Nav: FC = () => {
-  const {setNavChoice}=useStore()
+  const { setNavChoice } = useStore();
 
-  const setChoice=(value:NavType)=>{
-    setNavChoice(value)
-  }
   return (
     <>
-      <div className="bg-gray-400 h-150 w-50">
-          <ul>
-            <li className="p-2 text-lg cursor-pointer" onClick={()=>setChoice(NavType.wardrobe)}>Wardrobe</li>
-            <li className="p-2 text-lg cursor-pointer" onClick={()=>setChoice(NavType.type)}>Type</li>
-            <li className="p-2 text-lg cursor-pointer" onClick={()=>setChoice(NavType.space)}>Space</li>
-          </ul>
-          <Link to={"/login"}>назад</Link>
+      <div className="mt-3 bg-gray-400 h-130 w-60 rounded-lg">
+        <ul>
+          <li className={NavStyle} onClick={() => setNavChoice(NavType.wardrobe)}>
+            Wardrobe
+          </li>
+          <li className={NavStyle} onClick={() => setNavChoice(NavType.type)}>
+            Type
+          </li>
+          <li className={NavStyle} onClick={() => setNavChoice(NavType.space)}>
+            Space
+          </li>
+        </ul>
       </div>
     </>
   );
 };
-
